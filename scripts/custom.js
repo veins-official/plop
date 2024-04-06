@@ -21,8 +21,8 @@ class MenuButton extends Button {
   lateUpdate() {
     super.lateUpdate();
     if (!this.start) return;
-    if (this.transform.size.x < this.finalSize) this.transform.size.x += this.finalSize / 20;
-    if (this.transform.size.y < this.finalSize) this.transform.size.y += this.finalSize / 20;
+    if (this.transform.size.x < this.finalSize) this.transform.size.x += float2int(this.finalSize / 20);
+    if (this.transform.size.y < this.finalSize) this.transform.size.y += float2int(this.finalSize / 20);
     this.start = this.transform.size.x < this.finalSize & this.transform.size.y < this.finalSize;
     this.render();
   }
@@ -235,9 +235,9 @@ const scene_control = new SceneControl(
   {
     "Menu": () => {
       renderImage(images[26], new Vector4(540, 960 - 300, 1080, 650), 1); objects[2].render(); objects[3].renderHighScore();
-      objects.push(new MenuButton(540, 1210 + 100, 500, 4, () => { scene_control.load("Game"); }));
-      objects.push(new MenuButton(250, 1620 + 100, 300, 14, () => { scene_control.load("Shop"); }));
-      objects.push(new MenuButton(830, 1620 + 100, 300, 16, () => { window.open("https://vk.com/id450952979"); }));
+      objects.push(new MenuButton(540, 1310, 500, 4, () => { scene_control.load("Game"); }));
+      objects.push(new MenuButton(250, 1720, 300, 14, () => { scene_control.load("Shop"); }));
+      objects.push(new MenuButton(830, 1720, 300, 16, () => { window.open("https://vk.com/id450952979"); }));
     },
     "Game": () => {
       pause = false; objects.push(new Background()); objects.push(new Control());
@@ -271,3 +271,4 @@ class Loader {
 
 layers[0].context.font = "400px Monaco, monospace"; layers[0].context.textBaseline = "middle"; layers[0].context.textAlign = "center";
 const loader = new Loader(27); loader.load();
+vkBridge.send('VKWebAppShowBannerAd', { banner_location: 'bottom' });
