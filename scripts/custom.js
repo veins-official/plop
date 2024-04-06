@@ -269,5 +269,7 @@ class Loader {
 
 
 
+vkBridge.send("VKWebAppInit", {});      
+vkBridge.send("VKWebAppShowBannerAd", { banner_location: "bottom" }).then((data) => { if (data.result) { console.log("asd"); } }).catch((error) => {});
 layers[0].context.font = "400px Monaco, monospace"; layers[0].context.textBaseline = "middle"; layers[0].context.textAlign = "center";
 const loader = new Loader(27); loader.load();
