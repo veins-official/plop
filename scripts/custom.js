@@ -271,4 +271,3 @@ class Loader {
 
 layers[0].context.font = "400px Monaco, monospace"; layers[0].context.textBaseline = "middle"; layers[0].context.textAlign = "center";
 const loader = new Loader(27); loader.load();
-vkBridge.send('VKWebAppShowBannerAd', { banner_location: 'bottom' });
