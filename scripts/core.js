@@ -47,6 +47,21 @@ function collisions() {
 
 function lateUpdate() { objects.forEach((object) => { if (object.lateUpdate) object.lateUpdate(); }); }
 
-function tick() { requestAnimationFrame(tick); update(); collisions(); lateUpdate(); }
 
-requestAnimationFrame(tick);
+let current_time, last_time, elapsed_time;
+const FPS = 60;
+
+function tick() {
+  requestAnimationFrame(tick);
+  current_time = Date.now();
+  elapsed_time = current_time - last_time;
+
+  if (elapsed_time > fpsInterval) {
+    last_time = current_time - (elapsed_time % fpsInterval);
+    update(); collisions(); lateUpdate();
+  }
+}
+
+const fpsInterval = 1000 / FPS;
+last_time = Date.now();
+tick();
