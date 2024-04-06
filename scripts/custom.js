@@ -140,8 +140,8 @@ class MovePlatform extends Platform {
   constructor(y, direction) { super(y, 200, 1); this.direction = direction; this.time = 0; }
   update() {
     super.update(); if (!pause) {
-      this.time += 0.1; if (this.direction) this.transform.position.x += Math.sin(this.time) * 10;
-      else this.transform.position.y += Math.sin(this.time) * 10;
+      this.time += 0.1; if (this.direction) this.transform.position.x += float2int(Math.sin(this.time) * 10);
+      else this.transform.position.y += float2int(Math.sin(this.time) * 10);
     }
   }
   render() { renderImage(images[18], new Vector4(this.transform.position.x, this.transform.position.y, 200, 100), 0); }
