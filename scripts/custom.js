@@ -256,6 +256,7 @@ function start() {
   seed = (new Date()).getMilliseconds(); for (let i = 0; i < 2; i++) layers.push(new Layer());
   layers[1].context.font = "100px Monaco, monospace"; layers[1].context.textBaseline = "middle"; layers[2].context.fillStyle = "#feff0b";
   objects.push(scene_control); objects.push(new MoneyText()); objects.push(new ScoreText()); scene_control.load("Menu");
+  vkBridge.send('VKWebAppShowBannerAd', { banner_location: "bottom" });
 }
 
 
