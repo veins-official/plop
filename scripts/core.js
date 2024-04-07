@@ -47,6 +47,6 @@ function collisions() {
 
 function lateUpdate() { objects.forEach((object) => { if (object.lateUpdate) object.lateUpdate(); }); }
 
-function tick() { update(); collisions(); lateUpdate(); }
+function tick() { setTimeout(tick, 1000 / FPS); update(); collisions(); lateUpdate(); }
 
-const FPS = 60; setInterval(tick, 1000 / FPS)
+const FPS = 60; tick();
