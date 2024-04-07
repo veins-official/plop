@@ -166,9 +166,9 @@ class Coin extends HorizontalObject {
 
 
 function gameOver() {
-  pause = true; objects.push(new MenuButton(540, 785, 550, 6, () => { if (objects[2].getMoney() >= 21) { objects[2].setMoney(objects[2].getMoney() - 21); respawn(); } }));
+  pause = true; objects.push(new MenuButton(540, 785, 550, 6, () => { vkBridge.send("VKWebAppCheckNativeAds", { ad_format: "reward" }).then((data) => { if (data.result) { vkBridge.send("VKWebAppShowNativeAds", { ad_format: "reward" }).then((data) => { if (data.result) respawn(); }); } }); }));
   objects.push(new MenuButton(540, 1360, 300, 7, () => { scene_control.load("Game"); })); objects.push(new MenuButton(240, 1210, 250, 8, () => { scene_control.load("Menu"); }));
-  objects.push(new MenuButton(840, 1210, 250, 9, () => { vkBridge.send('VKWebAppShare', { link: "https://vk.com/app51897159" }); }));
+  objects.push(new MenuButton(840, 1210, 250, 9, () => { vkBridge.send("VKWebAppShare", { link: "https://vk.com/app51897159" }); }));
 }
 
 
@@ -256,7 +256,7 @@ function start() {
   seed = (new Date()).getMilliseconds(); for (let i = 0; i < 2; i++) layers.push(new Layer());
   layers[1].context.font = "100px Monaco, monospace"; layers[1].context.textBaseline = "middle"; layers[2].context.fillStyle = "#feff0b";
   objects.push(scene_control); objects.push(new MoneyText()); objects.push(new ScoreText()); scene_control.load("Menu");
-  vkBridge.send('VKWebAppShowBannerAd', { banner_location: "bottom" });
+  vkBridge.send("VKWebAppShowBannerAd", { banner_location: "bottom" });
 }
 
 
