@@ -168,7 +168,7 @@ class Coin extends HorizontalObject {
 function gameOver() {
   pause = true; objects.push(new MenuButton(540, 785, 550, 6, () => { if (objects[2].getMoney() >= 21) { objects[2].setMoney(objects[2].getMoney() - 21); respawn(); } }));
   objects.push(new MenuButton(540, 1360, 300, 7, () => { scene_control.load("Game"); })); objects.push(new MenuButton(240, 1210, 250, 8, () => { scene_control.load("Menu"); }));
-  objects.push(new MenuButton(840, 1210, 250, 9, () => { if (navigator.share) navigator.share({ title: "Плюх", url: window.location.href }) }));
+  objects.push(new MenuButton(840, 1210, 250, 9, () => { vkBridge.send('VKWebAppShare', { link: "https://vk.com/app51897159" }); }));
 }
 
 
