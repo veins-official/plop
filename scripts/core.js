@@ -23,7 +23,7 @@ class GameObject {
 
 function update() {
   for (let i = 0; i < objects.length; i++) {
-    if (objects[i].destroyed) { objects.splice(i, 1); i--; }
+    if (objects[i].destroyed) { delete objects[i]; objects.splice(i, 1); i--; }
     else { if (objects[i].update) objects[i].update(); }
   }
 }
@@ -48,20 +48,11 @@ function collisions() {
 function lateUpdate() { objects.forEach((object) => { if (object.lateUpdate) object.lateUpdate(); }); }
 
 
-let current_time, last_time, elapsed_time;
-const FPS = 60;
+const FPS = 60; const fpsInterval = 1000 / FPS; let last_time;
 
 function tick() {
-  requestAnimationFrame(tick);
-  current_time = Date.now();
-  elapsed_time = current_time - last_time;
-
-  if (elapsed_time > fpsInterval) {
-    last_time = current_time - (elapsed_time % fpsInterval);
-    update(); collisions(); lateUpdate();
-  }
+  last_time = performance.now(); update(); collisions(); lateUpdate();
+  setTimeout(tick, fpsInterval - (performance.now() - last_time));
 }
 
-const fpsInterval = 1000 / FPS;
-last_time = Date.now();
 tick();

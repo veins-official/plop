@@ -234,7 +234,7 @@ class SceneControl extends GameObject {
 const scene_control = new SceneControl(
   {
     "Menu": () => {
-      renderImage(images[26], new Vector4(540, 960 - 300, 1080, 650), 1); objects[2].render(); objects[3].renderHighScore();
+      renderImage(images[26], new Vector4(540, 660, 1080, 650), 1); objects[2].render(); objects[3].renderHighScore();
       objects.push(new MenuButton(540, 1310, 500, 4, () => { scene_control.load("Game"); }));
       objects.push(new MenuButton(250, 1720, 300, 14, () => { scene_control.load("Shop"); }));
       objects.push(new MenuButton(830, 1720, 300, 16, () => { window.open("https://vk.com/id450952979"); }));
