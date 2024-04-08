@@ -43,7 +43,7 @@ class MoneyText extends GameObject {
 
 class ScoreText extends GameObject {
   constructor() { super(100, 100, 100, 100); this.score = 0; this.highScore = localStorage.getItem("score") != null ? localStorage.getItem("score") : 0; }
-  update() { if (pause) return; this.score += 1 / 60; } // if (float2int(this.score) > float2int(this.highScore)) { this.highScore = float2int(this.score); localStorage.setItem("score", this.highScore); } }
+  update() { if (pause) return; this.score += 1 / 60; }
   lateUpdate() { if (!pause) this.render(); }
   render() { clearTransform(new Vector4(540, this.transform.position.y, 1080, this.transform.size.y), 1); renderImage(images[5], this.transform, 1); layers[1].context.fillText(float2int(this.score), this.transform.position.x + 55, this.transform.position.y + 10); }
   renderHighScore() { clearTransform(new Vector4(540, this.transform.position.y, 1080, this.transform.size.y), 1); renderImage(images[5], this.transform, 1); layers[1].context.fillText(float2int(this.highScore), this.transform.position.x + 55, this.transform.position.y + 10); }
@@ -81,7 +81,7 @@ class Player extends GameObject {
   collision(other) {
     if (other.constructor.name === "Platform" || other.constructor.name === "MovePlatform") {
       let a = this.transform.position.y < other.transform.position.y;
-      this.transform.position.y = other.transform.position.y + (other.transform.size.y + this.transform.size.y) / 2 * (a ? -1 : 1);
+      this.transform.position.y = float2int(other.transform.position.y + (other.transform.size.y + this.transform.size.y) / 2 * (a ? -1 : 1));
       this.speed /= a ? -1.5 : 2;
     }
   }
@@ -169,6 +169,7 @@ function gameOver() {
   pause = true; objects.push(new MenuButton(540, 785, 550, 6, () => { vkBridge.send("VKWebAppCheckNativeAds", { ad_format: "reward" }).then((data) => { if (data.result) { vkBridge.send("VKWebAppShowNativeAds", { ad_format: "reward" }).then((data) => { if (data.result) respawn(); }); } }); }));
   objects.push(new MenuButton(540, 1360, 300, 7, () => { scene_control.load("Game"); })); objects.push(new MenuButton(240, 1210, 250, 8, () => { scene_control.load("Menu"); }));
   objects.push(new MenuButton(840, 1210, 250, 9, () => { vkBridge.send("VKWebAppShare", { link: "https://vk.com/app51897159" }); }));
+  if (float2int(objects[3].score) > float2int(objects[3].highScore)) { objects[3].highScore = float2int(objects[3].score); localStorage.setItem("score", objects[3].highScore); }
 }
 
 
