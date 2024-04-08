@@ -55,8 +55,8 @@ class ScoreText extends GameObject {
 // GAME
 class Background extends GameObject {
   constructor() { super(540, 960, 1080, 1920); this.speed = 10; this.x = 1080; }
-  render() { this.x -= this.speed + float2int(objects[3].score / 60); if (this.x <= 0) this.x += 1080; renderImage(images[3], new Vector4(this.x - 540, 960, 1080, 1920), 0); renderImage(images[3], new Vector4(this.x + 540, 960, 1080, 1920), 0); }
-  lateUpdate() { if (!pause) { clearTransform(this.transform, 0); this.render(); } }
+  render(delta) { this.x -= float2int((this.speed + float2int(objects[3].score / 60)) * delta); if (this.x <= 0) this.x += 1080; renderImage(images[3], new Vector4(this.x - 540, 960, 1080, 1920), 0); renderImage(images[3], new Vector4(this.x + 540, 960, 1080, 1920), 0); }
+  lateUpdate(delta) { if (!pause) { clearTransform(this.transform, 0); this.render(delta); } }
 }
 
 
@@ -66,7 +66,7 @@ class Control extends Button { constructor() { super(540, 960, 1080, 1920); } on
 class Player extends GameObject {
   constructor(img) { super(540, 960, 200, 200); this.img = img; this.speed = -30; this.weight = 5; }
 
-  update() { if (!pause) { this.speed += 1 / 6 * this.weight; this.transform.position.y += float2int(this.speed); if (this.transform.position.y > 1920 + this.transform.size.y) gameOver(); } }
+  update(delta) { if (!pause) { this.speed += 1 / 6 * this.weight * delta; this.transform.position.y += float2int(this.speed); if (this.transform.position.y > 1920 + this.transform.size.y) gameOver(); } }
 
   lateUpdate() { if (!pause) this.render(); }
 
@@ -123,7 +123,7 @@ class LevelGenerator extends GameObject {
 class HorizontalObject extends GameObject {
   constructor(y, width, height) { super(1180, y, width, height); this.speed = 10; }
 
-  update() { if (!pause) { this.transform.position.x -= this.speed + float2int(objects[3].score / 60); if (this.transform.position.x < -this.transform.size.x / 2) this.destroyed = true; } }
+  update(delta) { if (!pause) { this.transform.position.x -= float2int((this.speed + float2int(objects[3].score / 60)) * delta); if (this.transform.position.x < -this.transform.size.x / 2) this.destroyed = true; } }
   lateUpdate() { if (!pause) this.render(); }
 
   collision() { }
