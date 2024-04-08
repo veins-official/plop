@@ -48,7 +48,10 @@ function collisions() {
 function lateUpdate() { objects.forEach((object) => { if (object.lateUpdate) object.lateUpdate(); }); }
 
 const FPS = 60; const timestep = 1000 / FPS;
-let last_time = 0; let deltaTime = 0;
-async function loop() { setTimeout(loop, timestep); deltaTime = (performance.now() - last_time) / timestep; last_time = performance.now(); update(); collisions(); lateUpdate(); }
+let last_time = 0; let delta_time = 0;
+function loop() {
+    delta_time += performance.now() - last_time - timestep; last_time = performance.now(); setTimeout(loop, timestep - delta_time);
+    update(); collisions(); lateUpdate();
+}
 
 loop();
