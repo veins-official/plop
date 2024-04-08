@@ -47,8 +47,15 @@ function collisions() {
 
 function lateUpdate() { objects.forEach((object) => { if (object.lateUpdate) object.lateUpdate(); }); }
 
-const FPS = 60; const timestep = 1000 / FPS;
+const timeStep = 1000 / 60; let previousTime = 0; let delta = 0;
 
-function loop() { setTimeout(loop, timestep); update(); collisions(); lateUpdate(); }
+const loop = time => {
+  delta = delta + time - previousTime;
+  previousTime = time;
 
-loop();
+  while (delta > timeStep) { update(); collisions(); lateUpdate(); delta = delta - timeStep; }
+  window.requestAnimationFrame(loop);
+};
+
+
+window.requestAnimationFrame(time => { previousTime = time; window.requestAnimationFrame(loop); });
