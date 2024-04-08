@@ -49,6 +49,6 @@ function lateUpdate() { objects.forEach((object) => { if (object.lateUpdate) obj
 
 const FPS = 60; const timestep = 1000 / FPS;
 
-function loop() { update(); collisions(); lateUpdate(); }
+function loop() { requestAnimationFrame(loop); update(); collisions(); lateUpdate(); }
 
-setInterval(loop, timestep);
+loop();
