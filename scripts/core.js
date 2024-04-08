@@ -21,10 +21,10 @@ class GameObject {
     }
 }
 
-function update(delta) {
+function update() {
     for (let i = 0; i < objects.length; i++) {
         if (objects[i].destroyed) { delete objects[i]; objects.splice(i, 1); i--; }
-        else { if (objects[i].update) objects[i].update(delta); }
+        else { if (objects[i].update) objects[i].update(); }
     }
 }
 
@@ -45,10 +45,10 @@ function collisions() {
     });
 }
 
-function lateUpdate(delta) { objects.forEach((object) => { if (object.lateUpdate) object.lateUpdate(delta); }); }
+function lateUpdate() { objects.forEach((object) => { if (object.lateUpdate) object.lateUpdate(); }); }
 
-const FPS = 60; const timestep = 1000 / FPS; let last_time = 0;
-
-async function loop() { setTimeout(loop, timestep); update((performance.now() - last_time) / timestep); collisions(); lateUpdate((performance.now() - last_time) / timestep); last_time = performance.now(); }
+const FPS = 60; const timestep = 1000 / FPS;
+let last_time = 0; let deltaTime = 0;
+async function loop() { setTimeout(loop, timestep); deltaTime = (performance.now() - last_time) / timestep; last_time = performance.now(); update(); collisions(); lateUpdate(); }
 
 loop();
