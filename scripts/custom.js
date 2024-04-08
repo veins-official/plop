@@ -43,7 +43,7 @@ class MoneyText extends GameObject {
 
 class ScoreText extends GameObject {
   constructor() { super(100, 100, 100, 100); this.score = 0; this.highScore = localStorage.getItem("score") != null ? localStorage.getItem("score") : 0; }
-  update() { if (pause) return; this.score += 1 / 60; if (float2int(this.score) > float2int(this.highScore)) { this.highScore = float2int(this.score); localStorage.setItem("score", this.highScore); } }
+  update() { if (pause) return; this.score += 1 / 60; } // if (float2int(this.score) > float2int(this.highScore)) { this.highScore = float2int(this.score); localStorage.setItem("score", this.highScore); } }
   lateUpdate() { if (!pause) this.render(); }
   render() { clearTransform(new Vector4(540, this.transform.position.y, 1080, this.transform.size.y), 1); renderImage(images[5], this.transform, 1); layers[1].context.fillText(float2int(this.score), this.transform.position.x + 55, this.transform.position.y + 10); }
   renderHighScore() { clearTransform(new Vector4(540, this.transform.position.y, 1080, this.transform.size.y), 1); renderImage(images[5], this.transform, 1); layers[1].context.fillText(float2int(this.highScore), this.transform.position.x + 55, this.transform.position.y + 10); }
