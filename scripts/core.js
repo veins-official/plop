@@ -54,8 +54,8 @@ function loop() {
     requestAnimationFrame(loop);
     current_time = Date.now(); delta_time = current_time - last_time;
     if (delta_time > timestep) {
-        update(); collisions(); lateUpdate();
         last_time = current_time - (delta_time % timestep);
+        update(); collisions(); lateUpdate();
     }
 }
 
