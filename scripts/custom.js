@@ -21,8 +21,8 @@ class MenuButton extends Button {
   lateUpdate() {
     super.lateUpdate();
     if (!this.start) return;
-    if (this.transform.size.x < this.finalSize) this.transform.size.x += float2int(this.finalSize / 40);
-    if (this.transform.size.y < this.finalSize) this.transform.size.y += float2int(this.finalSize / 40);
+    if (this.transform.size.x < this.finalSize) this.transform.size.x += float2int(this.finalSize / 20);
+    if (this.transform.size.y < this.finalSize) this.transform.size.y += float2int(this.finalSize / 20);
     this.start = this.transform.size.x < this.finalSize & this.transform.size.y < this.finalSize;
     this.render();
   }
@@ -43,7 +43,7 @@ class MoneyText extends GameObject {
 
 class ScoreText extends GameObject {
   constructor() { super(100, 100, 100, 100); this.score = 0; this.highScore = localStorage.getItem("score") != null ? localStorage.getItem("score") : 0; }
-  update() { if (pause) return; this.score += 1 / 120; if (float2int(this.score) > float2int(this.highScore)) { this.highScore = float2int(this.score); localStorage.setItem("score", this.highScore); } }
+  update() { if (pause) return; this.score += 1 / 60; if (float2int(this.score) > float2int(this.highScore)) { this.highScore = float2int(this.score); localStorage.setItem("score", this.highScore); } }
   lateUpdate() { if (!pause) this.render(); }
   render() { clearTransform(new Vector4(540, this.transform.position.y, 1080, this.transform.size.y), 1); renderImage(images[5], this.transform, 1); layers[1].context.fillText(float2int(this.score), this.transform.position.x + 55, this.transform.position.y + 10); }
   renderHighScore() { clearTransform(new Vector4(540, this.transform.position.y, 1080, this.transform.size.y), 1); renderImage(images[5], this.transform, 1); layers[1].context.fillText(float2int(this.highScore), this.transform.position.x + 55, this.transform.position.y + 10); }
@@ -54,7 +54,7 @@ class ScoreText extends GameObject {
 
 // GAME
 class Background extends GameObject {
-  constructor() { super(540, 960, 1080, 1920); this.speed = 5; this.x = 1080; }
+  constructor() { super(540, 960, 1080, 1920); this.speed = 10; this.x = 1080; }
   render() { this.x -= this.speed + float2int(objects[3].score / 60); if (this.x <= 0) this.x += 1080; renderImage(images[3], new Vector4(this.x - 540, 960, 1080, 1920), 0); renderImage(images[3], new Vector4(this.x + 540, 960, 1080, 1920), 0); }
   lateUpdate() { if (!pause) { clearTransform(this.transform, 0); this.render(); } }
 }
@@ -64,19 +64,19 @@ class Control extends Button { constructor() { super(540, 960, 1080, 1920); } on
 
 
 class Player extends GameObject {
-  constructor(img) { super(540, 960, 200, 200); this.img = img; this.speed = -15; this.weight = 2.5; }
+  constructor(img) { super(540, 960, 200, 200); this.img = img; this.speed = -30; this.weight = 5; }
 
-  update() { if (!pause) { this.speed += 1 / 12 * this.weight; this.transform.position.y += float2int(this.speed); if (this.transform.position.y > 1920 + this.transform.size.y) gameOver(); } }
+  update() { if (!pause) { this.speed += 1 / 6 * this.weight; this.transform.position.y += float2int(this.speed); if (this.transform.position.y > 1920 + this.transform.size.y) gameOver(); } }
 
   lateUpdate() { if (!pause) this.render(); }
 
   render() {
-    this.transform.size.x = float2int(5000 / abs(this.speed)); if (this.transform.size.x > 200) this.transform.size.x = 200;
-    this.transform.size.y = float2int((abs(this.speed) * 9)); if (this.transform.size.y < 200) this.transform.size.y = 200;
+    this.transform.size.x = float2int(10000 / abs(this.speed)); if (this.transform.size.x > 200) this.transform.size.x = 200;
+    this.transform.size.y = float2int((abs(this.speed) * 4.5)); if (this.transform.size.y < 200) this.transform.size.y = 200;
     renderImage(this.img, this.transform, 0);
   }
 
-  tap() { this.speed = 25; }
+  tap() { this.speed = 49; }
 
   collision(other) {
     if (other.constructor.name === "Platform" || other.constructor.name === "MovePlatform") {
@@ -90,15 +90,15 @@ class Player extends GameObject {
 
 class LevelGenerator extends GameObject {
   constructor() { super(0, 0, 0, 0); this.platform_timeout = 0; this.platform_time = 1; this.fake_platform_timeout = 0; this.fake_platform_time = 1; this.coin_timeout = 10; this.coin_time = 0; }
-  
+
   update() {
     if (!pause) {
-      this.platform_time += 1 / (this.platform_timeout * 120); if (this.platform_time >= 1) { this.platform_time = 0; this.generatePlatform(); }
-      this.coin_time += 1 / (this.coin_timeout * 120); if (this.coin_time >= 1) { this.coin_time = 0; this.generateCoin(); }
-      if (objects[3].score % 60 > 15) { this.fake_platform_time += 1 / (this.fake_platform_timeout * 120); if (this.fake_platform_time >= 1) { this.fake_platform_time = 0; this.generateFakePlatform(); } }
+      this.platform_time += 1 / (this.platform_timeout * 60); if (this.platform_time >= 1) { this.platform_time = 0; this.generatePlatform(); }
+      this.coin_time += 1 / (this.coin_timeout * 60); if (this.coin_time >= 1) { this.coin_time = 0; this.generateCoin(); }
+      if (objects[3].score % 60 > 15) { this.fake_platform_time += 1 / (this.fake_platform_timeout * 60); if (this.fake_platform_time >= 1) { this.fake_platform_time = 0; this.generateFakePlatform(); } }
     }
   }
-  
+
   generatePlatform() {
     let y = 960 + float2int(random() * 910);
 
@@ -121,7 +121,7 @@ class LevelGenerator extends GameObject {
 
 
 class HorizontalObject extends GameObject {
-  constructor(y, width, height) { super(1180, y, width, height); this.speed = 5; }
+  constructor(y, width, height) { super(1180, y, width, height); this.speed = 10; }
 
   update() { if (!pause) { this.transform.position.x -= this.speed + float2int(objects[3].score / 60); if (this.transform.position.x < -this.transform.size.x / 2) this.destroyed = true; } }
   lateUpdate() { if (!pause) this.render(); }
@@ -140,7 +140,7 @@ class MovePlatform extends Platform {
   constructor(y, direction) { super(y, 200, 1); this.direction = direction; this.time = 0; }
   update() {
     super.update(); if (!pause) {
-      this.time += 0.05; if (this.direction) this.transform.position.x += float2int(Math.sin(this.time) * 10);
+      this.time += 0.1; if (this.direction) this.transform.position.x += float2int(Math.sin(this.time) * 10);
       else this.transform.position.y += float2int(Math.sin(this.time) * 10);
     }
   }
@@ -150,7 +150,7 @@ class MovePlatform extends Platform {
 
 class FakePlatform extends HorizontalObject {
   constructor(y) { super(y, 200, 1); this.hide = false; this.a = 0; }
-  update() { super.update(); if (!pause) { if (this.hide) { this.transform.position.y += this.a; this.a += 1; } } }
+  update() { super.update(); if (!pause) { if (this.hide) { this.transform.position.y += this.a; this.a += 2; } } }
   render() { renderImage(images[17], new Vector4(this.transform.position.x, this.transform.position.y, 200, 100), 0); }
   collision(other) { if (other.constructor.name === "Player") this.hide = true; }
 }
@@ -159,7 +159,7 @@ class FakePlatform extends HorizontalObject {
 class Coin extends HorizontalObject {
   constructor(y) { super(y, 150, 150); this.hide = false; }
 
-  update() { super.update(); if(!pause) { if (this.hide) { this.transform.size.x -= 10; this.transform.size.y -= 10; if (this.transform.size.x <= 0) { objects[2].setMoney(objects[2].getMoney() + 1); this.destroyed = true; } } } }
+  update() { super.update(); if (!pause) { if (this.hide) { this.transform.size.x -= 10; this.transform.size.y -= 10; if (this.transform.size.x <= 0) { objects[2].setMoney(objects[2].getMoney() + 1); this.destroyed = true; } } } }
   render() { renderImage(images[2], this.transform, 0); }
   collision(other) { if (!this.hide & other.constructor.name === "Player") this.hide = true; }
 }
@@ -174,7 +174,7 @@ function gameOver() {
 
 function respawn() {
   objects[6].transform.position.y = 960; objects[6].speed = -30; pause = false;
-  objects.forEach(object => { if (object.constructor.name === "MenuButton") { object.destroyed = true; object.render = () => {} } });
+  objects.forEach(object => { if (object.constructor.name === "MenuButton") { object.destroyed = true; object.render = () => { } } });
   clearTransform(new Vector4(540, 960, 1080, 1920 - 600), 1);
 }
 // GAME
@@ -198,15 +198,15 @@ class ShopButton extends Button {
   update() {
     super.update(); clearTransform(this.transform, 1);
     if (suit == this.id || this.transform.position.y != this.startY) {
-      this.transform.position.y -= float2int(this.a); this.a -= 0.5;
-      if (this.transform.position.y > this.startY) { this.a += 10; this.transform.position.y = this.startY; }
+      this.transform.position.y -= float2int(this.a); this.a -= 5 / 3;
+      if (this.transform.position.y > this.startY) { this.a += 20; this.transform.position.y = this.startY; }
     }
 
     renderImage(images[suits[this.id].img], this.transform, 1);
     if (!this.active) {
       layers[1].context.textAlign = "center";
       layers[1].context.fillText(suits[this.id].cost, this.transform.position.x, this.transform.position.y + 200);
-      layers[1].context.textAlign = "left"; 
+      layers[1].context.textAlign = "left";
     }
   }
 }
@@ -224,7 +224,7 @@ class SceneControl extends GameObject {
 
   update() {
     if (this.move) {
-      clearTransform(this.transform, 2); this.transform.position.y -= 120; if (this.transform.position.y == 960) { this.clearObjects(); this.scenes[this.scene](); } if (this.transform.position.y == -960) this.move = false;
+      clearTransform(this.transform, 2); this.transform.position.y -= 240; if (this.transform.position.y == 960) { this.clearObjects(); this.scenes[this.scene](); } if (this.transform.position.y == -960) this.move = false;
       layers[2].context.fillRect(this.transform.position.x - this.transform.size.x / 2, this.transform.position.y - this.transform.size.y / 2, this.transform.size.x, this.transform.size.y);
     }
   }

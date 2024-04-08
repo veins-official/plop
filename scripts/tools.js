@@ -20,7 +20,7 @@ class Layer {
 
     document.querySelector("body").appendChild(this.canvas);
     this.canvas.height = 1920;
-    this.canvas.width  = 1080;
+    this.canvas.width = 1080;
     this.context.imageSmoothingEnabled = false;
   }
 }
