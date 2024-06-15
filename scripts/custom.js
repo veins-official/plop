@@ -166,9 +166,9 @@ class Coin extends HorizontalObject {
 
 
 function gameOver() {
-  pause = true; objects.push(new MenuButton(540, 785, 550, 6, () => { vkBridge.send("VKWebAppCheckNativeAds", { ad_format: "reward" }).then((data) => { if (data.result) { vkBridge.send("VKWebAppShowNativeAds", { ad_format: "reward" }).then((data) => { if (data.result) respawn(); }); } }); }));
+  pause = true; objects.push(new MenuButton(540, 785, 550, 6, () => { if (objects[2].getMoney() >= 21) { objects[2].setMoney(objects[2].getMoney() - 21); respawn(); } }));
   objects.push(new MenuButton(540, 1360, 300, 7, () => { scene_control.load("Game"); })); objects.push(new MenuButton(240, 1210, 250, 8, () => { scene_control.load("Menu"); }));
-  objects.push(new MenuButton(840, 1210, 250, 9, () => { vkBridge.send("VKWebAppShare", { link: "https://vk.com/app51897159" }); }));
+  objects.push(new MenuButton(840, 1210, 250, 9, () => { if (navigator.share) navigator.share({ title: "Плюх", url: window.location.href }) }));
   if (float2int(objects[3].score) > float2int(objects[3].highScore)) { objects[3].highScore = float2int(objects[3].score); localStorage.setItem("score", objects[3].highScore); }
 }
 
@@ -238,7 +238,7 @@ const scene_control = new SceneControl(
       renderImage(images[26], new Vector4(540, 660, 1080, 650), 1); objects[2].render(); objects[3].renderHighScore();
       objects.push(new MenuButton(540, 1310, 500, 4, () => { scene_control.load("Game"); }));
       objects.push(new MenuButton(250, 1720, 300, 14, () => { scene_control.load("Shop"); }));
-      objects.push(new MenuButton(830, 1720, 300, 16, () => { window.open("https://vk.com/id450952979"); }));
+      objects.push(new MenuButton(830, 1720, 300, 16, () => { window.open("https://t.me/veins4u"); }));
     },
     "Game": () => {
       pause = false; objects.push(new Background()); objects.push(new Control());
